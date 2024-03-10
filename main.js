@@ -1,52 +1,34 @@
-var DIRECTION = {
-    IDLE: 0,
-    UP: 1,
-    DOWN: 2,
-    LEFT: 3,
-    RIGHT: 4
-  };
-  //color = '##ffffb3'
-class Board {
-    Board(width, height, x, y, color) {
-        this.width = width;
-        this.height = height;
-        this.x = x;
-        this.y = y;
-    }
-    color = '#404040'
-}
+import { Pacman }  from './pacman.js';
+import { Board } from './board.js';
 
-class Pacman {
-    Pacman(width, height, x, y, color) {
-        this.width = width;
-        this.height = height;
-        this.x = x;
-        this.y = y;
-    }
-    color = '##ffffb3';
-
-} 
-
-class Ghost{
-    Ghost(width, height, x, y, color){
-        this.width = width;
-        this.height = height;
-        this.x = x;
-        this.y = y;
-    }
-    colors = ['#1a8cff', '#99ff66', '#ff5050', '#cc66ff'];
-}
+window.addEventListener('load', function() {
+    const canvas = document.getElementById("canvas1");
+    const ctx = canvas.getContext("2d");
+    const board = new Board(500, 500, 0, 0);
+    canvas.width = board.width;
+    canvas.height = board.height;
+    // ctx.fillStyle = board.getColor();
+    // ctx.fillRect(board.x, board.y, board.width, board.height);
 
 class Game{
-    initialize() {
-        const canvas = document.getElementById('canvas1');
-        const ctx = canvas.getContext('2d');
+    constructor(width, height){
+        this.width = width;
+        this.height = height;
+        this.pacman = new Pacman(this);
+    }
+    update(){
 
-        const b1 = new Board(3000, 4000, 0, 0, '#404040');
-        canvas.width = b1.width;
-        canvas.height = b1.height;
-
-        this.pacman = new Pacman();
-        this.ghost1 = new Ghost();
+    }
+    draw(context){
+        this.pacman.draw(context);
     }
 }
+const game = Game(canvas.width, canvas.height);
+console.log(game);
+
+    function animate(){
+        game.draw(ctx);
+        requestAnimationFrame(animate);
+    }
+    animate();
+})
