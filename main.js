@@ -1,5 +1,6 @@
 import { Pacman }  from './pacman.js';
 import { Board } from './board.js';
+import { InputHandler } from './input.js';
 
 window.addEventListener('load', function() {
     const canvas = document.getElementById("canvas1");
@@ -15,18 +16,21 @@ class Game{
         this.width = width;
         this.height = height;
         this.pacman = new Pacman(this);
+        this.input = new InputHandler();
     }
     update(){
-
+        this.pacman.update(this.input.keys);
     }
     draw(context){
         this.pacman.draw(context);
     }
 }
-const game = Game(canvas.width, canvas.height);
+const game = new Game(canvas.width, canvas.height);
 console.log(game);
 
     function animate(){
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+        game.update();
         game.draw(ctx);
         requestAnimationFrame(animate);
     }
