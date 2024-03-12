@@ -16,7 +16,19 @@ class Game{
         this.width = width;
         this.height = height;
         this.init();
+        this.score = 0;
     }
+    getRandom(min, max) {
+        const floatRandom = Math.random()
+      
+        const difference = max - min
+      
+        const random = Math.round(difference * floatRandom)
+      
+        const randomWithinRange = random + min
+      
+        return randomWithinRange
+      }
     init(){
         this.pacman = new Pacman(this);
 
@@ -25,8 +37,26 @@ class Game{
         this.ghost3 = new Ghost(this, 0, 500, '2');
         this.ghost4 = new Ghost(this, 500, 0, '3');
 
-        this.point = new Point(this, 250, 250);
-        this.score = 0;
+        this.points = [];
+    for (let i = 0; i < 10; i++) {
+        let x, y;
+        let unique = false;
+
+        while (!unique) {
+            x = this.getRandom(0, 500);
+            y = this.getRandom(0, 500);
+            unique = true; 
+
+            for (const point of this.points) {
+                if (x === point.x && y === point.y) {
+                    unique = false;
+                    break;
+                }
+            }
+        }
+
+        this.points.push(new Point(this, x, y));
+    }
 
         this.input = new InputHandler();
         this.gameOver = false;
@@ -41,9 +71,11 @@ class Game{
         this.ghost3.update();
         this.ghost4.update();
 
-        this.point.update();
+        for (const point of this.points) {
+            point.update();
+        }
 
-        this.checkifCollide();
+        this.checkIfCollide();
     }
     stop(){
         ctx.drawImage(document.getElementById('gameover'), 125, 125, this.height/2, this.width/2);
@@ -65,9 +97,19 @@ class Game{
         this.ghost3.draw(context);
         this.ghost4.draw(context);
 
-        this.point.draw(context);
+        for (const point of this.points) {
+            point.draw(context);
+        }
     }
-    checkifCollide(){
+    checkIfCollide(){
+        for (const point of this.points) {
+            const overlapXp = this.pacman.x < point.x + point.width && this.pacman.x + this.pacman.width > point.x;
+            const overlapYp = this.pacman.y < point.y + point.height && this.pacman.y + this.pacman.height > point.y;
+            if (overlapXp && overlapYp){
+                this.score += 10;
+                document.getElementById("score").innerHTML="score: "+this.score;
+            }
+        }
     const overlapX = this.pacman.x < this.ghost1.x + this.ghost1.width && 
                      this.pacman.x + this.pacman.width > this.ghost1.x || this.pacman.x < this.ghost2.x + this.ghost2.width && 
                      this.pacman.x + this.pacman.width > this.ghost2.x;
@@ -76,23 +118,14 @@ class Game{
                      this.pacman.y + this.pacman.height > this.ghost1.y || this.pacman.y < this.ghost2.y + this.ghost2.height && 
                      this.pacman.y + this.pacman.height > this.ghost2.y;
 
-    const overlapYp = this.pacman.y < this.point.y + this.point.height && 
-                      this.pacman.y + this.pacman.height > this.point.y;
-
-    const overlapXp = this.pacman.x < this.point.x + this.point.width && 
-                      this.pacman.x + this.pacman.width > this.point.x;
-
-    if (overlapXp && overlapYp){
-        this.score += 10;
-        document.getElementById("score").innerHTML="score: "+this.score;
-    }
-
     if (overlapX && overlapY) {
         
         this.gameOver = true;
     }
 }
     restart(){
+        this.score = 0;
+        document.getElementById("score").innerHTML="score: "+this.score;
         this.init(); 
     }
 }
