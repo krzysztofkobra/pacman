@@ -20,7 +20,7 @@ body{
 #pacman{
     display: none;
 }
-#ghost{
+#ghost, #ghost2{
     display: none;
 }
 #gameover{
@@ -30,4 +30,7 @@ body{
     display: none;
     text-align: center;
     font-size: large;
+}
+#point{
+    display: none;
 }

@@ -2,6 +2,7 @@ import { Pacman }  from './pacman.js';
 import { Board } from './board.js';
 import { InputHandler } from './input.js';
 import { Ghost } from './ghost.js';
+import { Point } from './points.js';
 
 window.addEventListener('load', function() {
     const canvas = document.getElementById("canvas1");
@@ -9,8 +10,6 @@ window.addEventListener('load', function() {
     const board = new Board(500, 500, 0, 0);
     canvas.width = board.width;
     canvas.height = board.height;
-    // ctx.fillStyle = board.getColor();
-    // ctx.fillRect(board.x, board.y, board.width, board.height);
 
 class Game{
     constructor(width, height){
@@ -20,9 +19,12 @@ class Game{
     }
     init(){
         this.pacman = new Pacman(this);
-        this.ghost1 = new Ghost(this, 0, 0);
-        this.ghost2 = new Ghost(this, 250, 250);
+        this.ghost1 = new Ghost(this, 500, 500);
+        this.ghost2 = new Ghost(this, 0, 0);
+
         this.score = 0;
+        this.point = new Point(this, 100, 100);
+
         this.input = new InputHandler();
         this.gameOver = false;
     }
@@ -31,6 +33,7 @@ class Game{
 
         this.pacman.update(this.input.keys);
         this.ghost1.update();
+        this.ghost2.update();
         this.checkifCollide();
     }
     stop(){
@@ -49,6 +52,7 @@ class Game{
 
         this.pacman.draw(context);
         this.ghost1.draw(context);
+        this.ghost2.draw(context);
     }
     checkifCollide(){
        

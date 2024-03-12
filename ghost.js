@@ -6,11 +6,10 @@ export class Ghost{
         this.x = x;
         this.y = y;
         this.vy = 0;
-        this.image = document.getElementById('ghost');
+        this.image = [document.getElementById('ghost1'), document.getElementById('ghost2')];
         this.speed = 0;
         this.maxSpeed = 2;
     }
-    //colors = ['#1a8cff', '#99ff66', '#ff5050', '#cc66ff'];
     draw(context){
         context.drawImage(this.image, this.x, this.y, this.height, this.width);
     }
