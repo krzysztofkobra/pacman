@@ -76,9 +76,10 @@ class Game{
         }
 
         this.checkIfCollide();
+        this.won();
+        this.lost();
     }
     stop(){
-        ctx.drawImage(document.getElementById('gameover'), 125, 125, this.height/2, this.width/2);
         document.getElementById('gameover2').style.display='block';
 
         document.addEventListener('keydown', (event) => {
@@ -102,14 +103,18 @@ class Game{
         }
     }
     checkIfCollide(){
-        for (const point of this.points) {
+        let i;
+        for (i = 0; i < this.points.length; i++) {
+            const point = this.points[i];
             const overlapXp = this.pacman.x < point.x + point.width && this.pacman.x + this.pacman.width > point.x;
             const overlapYp = this.pacman.y < point.y + point.height && this.pacman.y + this.pacman.height > point.y;
-            if (overlapXp && overlapYp){
+            if (overlapXp && overlapYp) {
                 this.score += 10;
-                document.getElementById("score").innerHTML="score: "+this.score;
+                document.getElementById("score").innerHTML = "Score: " + this.score;
+                this.points.splice(i, 1);
+                break;
             }
-        }
+    }
     const overlapX = this.pacman.x < this.ghost1.x + this.ghost1.width && 
                      this.pacman.x + this.pacman.width > this.ghost1.x || this.pacman.x < this.ghost2.x + this.ghost2.width && 
                      this.pacman.x + this.pacman.width > this.ghost2.x;
@@ -123,6 +128,18 @@ class Game{
         this.gameOver = true;
     }
 }
+    won(){
+        if(this.score == 100){
+            ctx.drawImage(document.getElementById('win'), 125, 125, this.height/2, this.width/2);
+            this.stop();
+        }     
+    }
+    lost(){
+        if(this.gameOver == true){
+            ctx.drawImage(document.getElementById('gameover'), 125, 125, this.height/2, this.width/2);
+            this.stop();
+        }    
+    }
     restart(){
         this.score = 0;
         document.getElementById("score").innerHTML="score: "+this.score;
