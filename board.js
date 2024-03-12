@@ -5,4 +5,5 @@ export class Board {
         this.x = x;
         this.y = y;
     }
+    
 }

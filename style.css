@@ -23,3 +23,6 @@ body{
 #ghost{
     display: none;
 }
+#gameover{
+    display: none;
+}

@@ -38,5 +38,4 @@ export class Pacman {
     draw(context){
         context.drawImage(this.image, this.x, this.y, this.height, this.width);
     }
-
 } 
