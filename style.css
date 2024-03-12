@@ -20,7 +20,7 @@ body{
 #pacman{
     display: none;
 }
-#ghost, #ghost2{
+#ghost, #ghost2, #ghost3, #ghost4{
     display: none;
 }
 #gameover{

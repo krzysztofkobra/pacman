@@ -2,7 +2,6 @@ import { Pacman }  from './pacman.js';
 import { Board } from './board.js';
 import { InputHandler } from './input.js';
 import { Ghost } from './ghost.js';
-import { Point } from './points.js';
 
 window.addEventListener('load', function() {
     const canvas = document.getElementById("canvas1");
@@ -10,6 +9,8 @@ window.addEventListener('load', function() {
     const board = new Board(500, 500, 0, 0);
     canvas.width = board.width;
     canvas.height = board.height;
+    // ctx.fillStyle = board.getColor();
+    // ctx.fillRect(board.x, board.y, board.width, board.height);
 
 class Game{
     constructor(width, height){
@@ -19,12 +20,13 @@ class Game{
     }
     init(){
         this.pacman = new Pacman(this);
-        this.ghost1 = new Ghost(this, 500, 500);
-        this.ghost2 = new Ghost(this, 0, 0);
 
+        this.ghost1 = new Ghost(this, 0, 0, '1');
+        this.ghost2 = new Ghost(this, 500, 500, '0');
+        this.ghost3 = new Ghost(this, 0, 500, '2');
+        this.ghost4 = new Ghost(this, 500, 0, '3');
+        
         this.score = 0;
-        this.point = new Point(this, 100, 100);
-
         this.input = new InputHandler();
         this.gameOver = false;
     }
@@ -32,8 +34,12 @@ class Game{
         if(this.gameOver == true) this.stop();
 
         this.pacman.update(this.input.keys);
+
         this.ghost1.update();
         this.ghost2.update();
+        this.ghost3.update();
+        this.ghost4.update();
+
         this.checkifCollide();
     }
     stop(){
@@ -53,14 +59,18 @@ class Game{
         this.pacman.draw(context);
         this.ghost1.draw(context);
         this.ghost2.draw(context);
+        this.ghost3.draw(context);
+        this.ghost4.draw(context);
     }
     checkifCollide(){
        
     const overlapX = this.pacman.x < this.ghost1.x + this.ghost1.width && 
-    this.pacman.x + this.pacman.width > this.ghost1.x;
+    this.pacman.x + this.pacman.width > this.ghost1.x || this.pacman.x < this.ghost2.x + this.ghost2.width && 
+    this.pacman.x + this.pacman.width > this.ghost2.x;
 
     const overlapY = this.pacman.y < this.ghost1.y + this.ghost1.height && 
-    this.pacman.y + this.pacman.height > this.ghost1.y;
+    this.pacman.y + this.pacman.height > this.ghost1.y || this.pacman.y < this.ghost2.y + this.ghost2.height && 
+    this.pacman.y + this.pacman.height > this.ghost2.y;
 
     if (overlapX && overlapY) {
         
