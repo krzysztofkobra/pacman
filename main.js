@@ -62,8 +62,6 @@ class Game{
         this.gameOver = false;
     }
     update(){
-        if(this.gameOver == true) this.stop();
-
         this.pacman.update(this.input.keys);
 
         this.ghost1.update();
@@ -81,16 +79,19 @@ class Game{
     }
     stop(){
         document.getElementById('gameover2').style.display='block';
-
+    
         document.addEventListener('keydown', (event) => {
-            if (event.key === 'Enter' && game.gameOver) {
-                game.restart();
-                document.getElementById('gameover2').style.display='none';
+            if (this.gameOver || this.score === 100) {
+                if (event.key === 'Enter') {
+                    game.restart();
+                    document.getElementById('gameover2').style.display='none';
+                }
             }
         });
     }
     draw(context){
         if(this.gameOver == true) return;
+        if(this.score == 100) return;
 
         this.pacman.draw(context);
         this.ghost1.draw(context);
