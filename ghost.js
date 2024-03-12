@@ -1,10 +1,10 @@
 export class Ghost{
-    constructor(game){
+    constructor(game, x, y){
         this.game = game;
         this.height = 45;
         this.width = 45;
-        this.x = 0;
-        this.y = 0;
+        this.x = x;
+        this.y = y;
         this.vy = 0;
         this.image = document.getElementById('ghost');
         this.speed = 0;

@@ -16,16 +16,37 @@ class Game{
     constructor(width, height){
         this.width = width;
         this.height = height;
+        this.init();
+    }
+    init(){
         this.pacman = new Pacman(this);
+        this.ghost1 = new Ghost(this, 0, 0);
+        this.ghost2 = new Ghost(this, 250, 250);
+        this.score = 0;
         this.input = new InputHandler();
-        this.ghost1 = new Ghost(this);
+        this.gameOver = false;
     }
     update(){
+        if(this.gameOver == true) this.stop();
+
         this.pacman.update(this.input.keys);
         this.ghost1.update();
         this.checkifCollide();
     }
+    stop(){
+        ctx.drawImage(document.getElementById('gameover'), 125, 125, this.height/2, this.width/2);
+        document.getElementById('gameover2').style.display='block';
+
+        document.addEventListener('keydown', (event) => {
+            if (event.key === 'Enter' && game.gameOver) {
+                game.restart();
+                document.getElementById('gameover2').style.display='none';
+            }
+        });
+    }
     draw(context){
+        if(this.gameOver == true) return;
+
         this.pacman.draw(context);
         this.ghost1.draw(context);
     }
@@ -34,15 +55,17 @@ class Game{
     const overlapX = this.pacman.x < this.ghost1.x + this.ghost1.width && 
     this.pacman.x + this.pacman.width > this.ghost1.x;
 
-
     const overlapY = this.pacman.y < this.ghost1.y + this.ghost1.height && 
     this.pacman.y + this.pacman.height > this.ghost1.y;
 
-
     if (overlapX && overlapY) {
-        ctx.drawImage(document.getElementById('gameover'), 125, 125, this.height/2, this.width/2);
+        
+        this.gameOver = true;
     }
 }
+    restart(){
+        this.init(); 
+    }
 }
     const game = new Game(canvas.width, canvas.height);
     console.log(game);

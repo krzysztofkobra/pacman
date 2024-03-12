@@ -20,5 +20,5 @@ export class InputHandler{
             }
             console.log(e.key, this.keys);
         });
+        }
     }
-}
